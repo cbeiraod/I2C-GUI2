@@ -28,6 +28,7 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://github.com/cbeiraod/I2C-GUI2"
+"Documentation" = "https://i2c-gui2.readthedocs.io/"
 "Bug Tracker" = "https://github.com/cbeiraod/I2C-GUI2/issues"
 
 
