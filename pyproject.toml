@@ -31,7 +31,9 @@ dependencies = [
 "Documentation" = "https://i2c-gui2.readthedocs.io/"
 "Bug Tracker" = "https://github.com/cbeiraod/I2C-GUI2/issues"
 
-
+[project.scripts]
+etroc1-gui = "i2c_gui2.etroc1_gui:main"
+etroc2-gui = "i2c_gui2.etroc2_gui:main"
 
 [tool.pytest.ini_options]
 addopts = [
