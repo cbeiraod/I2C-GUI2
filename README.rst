@@ -10,6 +10,8 @@ I2C-GUI++
 
 |docs|
 
+|version| |wheel| |supported-versions| |supported-implementations|
+
 |commits-since|
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000
@@ -31,6 +33,22 @@ I2C-GUI++
 .. |docs| image:: https://readthedocs.org/projects/i2c-gui2/badge/?version=latest
     :target: https://i2c-gui2.readthedocs.io/
     :alt: Documentation Status
+
+.. |version| image:: https://img.shields.io/pypi/v/I2C-GUI2.svg
+    :alt: PyPI Package latest release
+    :target: https://pypi.org/project/I2C-GUI2
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/I2C-GUI2.svg
+    :alt: PyPI Wheel
+    :target: https://pypi.org/project/I2C-GUI2
+
+.. |supported-versions| image:: https://img.shields.io/pypi/pyversions/I2C-GUI2.svg
+    :alt: Supported versions
+    :target: https://pypi.org/project/I2C-GUI2
+
+.. |supported-implementations| image:: https://img.shields.io/pypi/implementation/I2C-GUI2.svg
+    :alt: Supported implementations
+    :target: https://pypi.org/project/I2C-GUI2
 
 .. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.0.1.svg
     :alt: Commits since latest release
