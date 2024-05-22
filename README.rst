@@ -32,9 +32,9 @@ I2C-GUI++
     :target: https://i2c-gui2.readthedocs.io/
     :alt: Documentation Status
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.0.0.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.0.1.svg
     :alt: Commits since latest release
-    :target: https://github.com/cbeiraod/I2c-GUI2/compare/v0.0.0...main
+    :target: https://github.com/cbeiraod/I2c-GUI2/compare/v0.0.1...main
 
 .. end-badges
 
