@@ -9,6 +9,8 @@ I2C-GUI++
 
     * - |pre-commit|
     * - |black| |flake8| |isort|
+    * - |docs|
+    * - |commits-since|
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000
     :target: https://github.com/psf/black
@@ -25,6 +27,14 @@ I2C-GUI++
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
     :target: https://github.com/pre-commit/pre-commit
     :alt: pre-commit
+
+.. |docs| image:: https://readthedocs.org/projects/i2c-gui2/badge/?version=latest
+    :target: https://i2c-gui2.readthedocs.io/
+    :alt: Documentation Status
+
+.. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.0.0.svg
+    :alt: Commits since latest release
+    :target: https://github.com/cbeiraod/I2c-GUI2/compare/v0.0.0...main
 
 .. end-badges
 
