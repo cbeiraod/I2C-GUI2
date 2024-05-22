@@ -5,8 +5,11 @@ I2C-GUI++
 .. start-badges
 
 |pre-commit|
+
 |black| |flake8| |isort|
+
 |docs|
+
 |commits-since|
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000
