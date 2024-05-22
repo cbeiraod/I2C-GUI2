@@ -4,13 +4,10 @@ I2C-GUI++
 
 .. start-badges
 
-.. list-table::
-    :stub-columns: 1
-
-    * - |pre-commit|
-    * - |black| |flake8| |isort|
-    * - |docs|
-    * - |commits-since|
+|pre-commit|
+|black| |flake8| |isort|
+|docs|
+|commits-since|
 
 .. |black| image:: https://img.shields.io/badge/code%20style-black-000000
     :target: https://github.com/psf/black
