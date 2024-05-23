@@ -105,6 +105,7 @@ Then install a few other dependencies which are only used in development:
 .. code:: bash
 
   python -m pip install --upgrade pytest
+  python -m pip install --upgrade pytest-cov
   python -m pip install --upgrade pre-commit
   python -m pip install --upgrade bump2version
   python -m pip install --upgrade black
@@ -133,6 +134,10 @@ pytest
 We are using pytest to run unit tests on the software.
 See `here <https://docs.pytest.org/en/7.4.x/getting-started.html>`_ for ideas on how to get started.
 Use the command ``pytest`` to run all the tests.
+
+We use the pytest-cov plugin to get coverage reports from pytest.
+Use the command ``pytest --cov --cov-report term-missing`` to run all the tests and get a coverage report.
+Use the command ``pytest --cov --cov-report term-missing --cov-report html`` to get an html report with detailed information.
 
 pre-commit
 ----------
