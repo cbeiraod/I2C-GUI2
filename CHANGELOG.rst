@@ -4,6 +4,7 @@ Changelog
 Current (2024-05-22)
 --------------------
 
+* Added tests for validating the I2C messages values for building custom I2C commands
 * Implemented initial tests for the address_space_controller class
 
 0.0.1 (2024-05-22)
