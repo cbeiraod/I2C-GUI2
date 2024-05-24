@@ -29,13 +29,6 @@ from i2c_gui2.chips.address_space_controller import Address_Space_Controller
 
 
 @pytest.fixture
-def logger():
-    # logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s:%(name)s:%(message)s')
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s:%(name)s:%(message)s')
-    yield logging.getLogger("Test_Logger")
-
-
-@pytest.fixture
 def asc_name():
     yield "test_name"
 
