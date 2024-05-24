@@ -30,5 +30,13 @@ def test_swap_endian_16bit():
     assert swap_endian_16bit(0x1234) == 0x3412
 
 
+def test_swap_endian_16bit_truncates():
+    assert swap_endian_16bit(0x31234) == 0x3412
+
+
 def test_swap_endian_32bit():
     assert swap_endian_32bit(0x12345678) == 0x78563412
+
+
+def test_swap_endian_32bit_truncates():
+    assert swap_endian_32bit(0xA12345678) == 0x78563412
