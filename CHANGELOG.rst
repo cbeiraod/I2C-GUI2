@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Current (2024-05-24)
---------------------
+0.0.2 (2024-05-24)
+------------------
 
 * Added tests for the I2C Connection Helper base class
 * Implemented the I2C Messages class
