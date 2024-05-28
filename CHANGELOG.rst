@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Current (2024-05-24)
+--------------------
+
+* Added endian swap functions to the generic functions file
+
 0.0.2 (2024-05-24)
 ------------------
 
