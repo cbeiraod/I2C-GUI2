@@ -22,10 +22,14 @@
 #############################################################################
 
 
+import pytest
+
 from i2c_gui2.functions import address_to_phys
+from i2c_gui2.functions import bytes_to_word_list
 from i2c_gui2.functions import swap_endian_16bit
 from i2c_gui2.functions import swap_endian_32bit
 from i2c_gui2.functions import valid_i2c_address
+from i2c_gui2.functions import word_list_to_bytes
 
 
 def test_swap_endian_16bit():
@@ -80,3 +84,66 @@ def test_address_to_phys_32bit_big():
 
 def test_address_to_phys_32bit_little():
     assert address_to_phys(0x21763454, bitlength=32, endianness='little') == 0x54347621
+
+
+def test_address_to_phys_fail():
+    with pytest.raises(Exception) as e_info:
+        address_to_phys(0x21763454, bitlength=23, endianness='little')
+    assert e_info.match(r"^Endian swap not implemented for bit length 23")
+
+
+def test_word_list_to_bytes_8bit_big():
+    assert word_list_to_bytes([0x32, 0x86], bytelength=1, endianness='big') == [0x32, 0x86]
+
+
+def test_word_list_to_bytes_8bit_little():
+    assert word_list_to_bytes([0x32, 0x86], bytelength=1, endianness='little') == [0x32, 0x86]
+
+
+def test_word_list_to_bytes_16bit_big():
+    assert word_list_to_bytes([0x3210, 0x8654], bytelength=2, endianness='big') == [0x32, 0x10, 0x86, 0x54]
+
+
+def test_word_list_to_bytes_16bit_little():
+    assert word_list_to_bytes([0x3210, 0x8654], bytelength=2, endianness='little') == [0x10, 0x32, 0x54, 0x86]
+
+
+def test_word_list_to_bytes_32bit_big():
+    assert word_list_to_bytes([0x32103456, 0x86285031], bytelength=4, endianness='big') == [0x32, 0x10, 0x34, 0x56, 0x86, 0x28, 0x50, 0x31]
+
+
+def test_word_list_to_bytes_32bit_little():
+    assert word_list_to_bytes([0x32103456, 0x86285031], bytelength=4, endianness='little') == [
+        0x56,
+        0x34,
+        0x10,
+        0x32,
+        0x31,
+        0x50,
+        0x28,
+        0x86,
+    ]
+
+
+def test_bytes_to_word_list_8bit_big():
+    assert bytes_to_word_list([0x21, 0x34], bytelength=1, endianness='big') == [0x21, 0x34]
+
+
+def test_bytes_to_word_list_8bit_little():
+    assert bytes_to_word_list([0x21, 0x34], bytelength=1, endianness='little') == [0x21, 0x34]
+
+
+def test_bytes_to_word_list_16bit_big():
+    assert bytes_to_word_list([0x21, 0x34], bytelength=2, endianness='big') == [0x2134]
+
+
+def test_bytes_to_word_list_16bit_little():
+    assert bytes_to_word_list([0x21, 0x34], bytelength=2, endianness='little') == [0x3421]
+
+
+def test_bytes_to_word_list_32bit_big():
+    assert bytes_to_word_list([0x21, 0x34, 0x76, 0x12], bytelength=4, endianness='big') == [0x21347612]
+
+
+def test_bytes_to_word_list_32bit_little():
+    assert bytes_to_word_list([0x21, 0x34, 0x76, 0x12], bytelength=4, endianness='little') == [0x12763421]

@@ -4,7 +4,8 @@ Changelog
 Current (2024-05-28)
 --------------------
 
-* Added adress byte adjustment function for different endianness and bit lengths
+* Added word_list_to_bytes and bytes_to_word_list functions
+* Added address byte adjustment function for different endianness and bit lengths
 * Added I2C address validation function
 * Added endian swap functions to the generic functions file
 

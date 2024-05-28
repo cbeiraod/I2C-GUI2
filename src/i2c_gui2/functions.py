@@ -59,6 +59,50 @@ def address_to_phys(address: int, bitlength: int = 8, endianness: str = 'big'):
         elif bitlength == 32:
             address = swap_endian_32bit(address)
         else:
-            raise RuntimeError(f"Endian swap not implemented for but length {bitlength}")
+            raise RuntimeError(f"Endian swap not implemented for bit length {bitlength}")
 
     return address
+
+
+def word_list_to_bytes(word_list: list[int], bytelength: int = 1, endianness: str = 'big'):
+    if bytelength == 1:
+        byte_list = word_list
+    else:
+        byte_list = []
+        if endianness == 'big':
+            for word in word_list:
+                for byte_offset in range(bytelength):
+                    byte_list += [(word >> ((bytelength - 1 - byte_offset) * 8)) & 0xFF]
+        else:  # if endianness == 'little':
+            for word in word_list:
+                for byte_offset in range(bytelength):
+                    byte_list += [(word >> (byte_offset * 8)) & 0xFF]
+
+    return byte_list
+
+
+def bytes_to_word_list(byte_list: list[int], bytelength: int = 1, endianness: str = 'big'):
+    if bytelength == 1:
+        word_list = byte_list
+    else:
+        word_list = []
+        word_count = int(len(byte_list) / bytelength)
+        # Do the if outside the for loops, in this way there is a single if evaluation,
+        # instead of multiple if evaluations for each iteration
+        if endianness == 'big':
+            for word_idx in range(word_count):
+                word = 0
+                byte_base_idx = word_idx * bytelength
+                for byte_offset in range(bytelength):
+                    byte_idx = byte_base_idx + byte_offset
+                    word += byte_list[byte_idx] << ((bytelength - 1 - byte_offset) * 8)
+                word_list += [word]
+        else:  # if endianness == 'little':
+            for word_idx in range(word_count):
+                word = 0
+                byte_base_idx = word_idx * bytelength
+                for byte_offset in range(bytelength):
+                    byte_idx = byte_base_idx + byte_offset
+                    word += byte_list[byte_idx] << (byte_offset * 8)
+                word_list += [word]
+    return word_list
