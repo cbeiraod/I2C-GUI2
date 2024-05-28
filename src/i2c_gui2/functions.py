@@ -38,3 +38,13 @@ def swap_endian_32bit(value: int):
     value_swapped = (value >> 24) | ((value & 0xFF0000) >> 8) | ((value & 0xFF00) << 8) | ((value & 0xFF) << 24)
 
     return value_swapped
+
+
+def valid_i2c_address(value: int):
+    if not isinstance(value, int):
+        return False
+
+    if value > 127 or value < 0:
+        return False
+
+    return True

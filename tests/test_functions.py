@@ -24,6 +24,7 @@
 
 from i2c_gui2.functions import swap_endian_16bit
 from i2c_gui2.functions import swap_endian_32bit
+from i2c_gui2.functions import valid_i2c_address
 
 
 def test_swap_endian_16bit():
@@ -40,3 +41,17 @@ def test_swap_endian_32bit():
 
 def test_swap_endian_32bit_truncates():
     assert swap_endian_32bit(0xA12345678) == 0x78563412
+
+
+def test_valid_i2c_addres_wrong_type():
+    assert not valid_i2c_address("hello")
+
+
+def test_valid_i2c_addres_outside_range():
+    assert not valid_i2c_address(0x80)
+    assert not valid_i2c_address(0xFF)
+    assert not valid_i2c_address(-1)
+
+
+def test_valid_i2c_addres():
+    assert valid_i2c_address(0x21)
