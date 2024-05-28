@@ -4,6 +4,7 @@ Changelog
 Current (2024-05-28)
 --------------------
 
+* Added adress byte adjustment function for different endianness and bit lengths
 * Added I2C address validation function
 * Added endian swap functions to the generic functions file
 

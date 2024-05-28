@@ -22,6 +22,7 @@
 #############################################################################
 
 
+from i2c_gui2.functions import address_to_phys
 from i2c_gui2.functions import swap_endian_16bit
 from i2c_gui2.functions import swap_endian_32bit
 from i2c_gui2.functions import valid_i2c_address
@@ -55,3 +56,27 @@ def test_valid_i2c_addres_outside_range():
 
 def test_valid_i2c_addres():
     assert valid_i2c_address(0x21)
+
+
+def test_address_to_phys_8bit_big():
+    assert address_to_phys(0x21, bitlength=8, endianness='big') == 0x21
+
+
+def test_address_to_phys_8bit_little():
+    assert address_to_phys(0x21, bitlength=8, endianness='little') == 0x21
+
+
+def test_address_to_phys_16bit_big():
+    assert address_to_phys(0x2113, bitlength=16, endianness='big') == 0x2113
+
+
+def test_address_to_phys_16bit_little():
+    assert address_to_phys(0x2113, bitlength=16, endianness='little') == 0x1321
+
+
+def test_address_to_phys_32bit_big():
+    assert address_to_phys(0x21763454, bitlength=32, endianness='big') == 0x21763454
+
+
+def test_address_to_phys_32bit_little():
+    assert address_to_phys(0x21763454, bitlength=32, endianness='little') == 0x54347621

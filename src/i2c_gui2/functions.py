@@ -48,3 +48,17 @@ def valid_i2c_address(value: int):
         return False
 
     return True
+
+
+def address_to_phys(address: int, bitlength: int = 8, endianness: str = 'big'):
+    if endianness == 'little':
+        if bitlength == 8:
+            pass
+        elif bitlength == 16:
+            address = swap_endian_16bit(address)
+        elif bitlength == 32:
+            address = swap_endian_32bit(address)
+        else:
+            raise RuntimeError(f"Endian swap not implemented for but length {bitlength}")
+
+    return address
