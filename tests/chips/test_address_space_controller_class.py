@@ -23,9 +23,13 @@
 
 import logging
 
+# from unittest.mock import call
+from unittest.mock import patch
+
 import pytest
 
 from i2c_gui2.chips.address_space_controller import Address_Space_Controller
+from i2c_gui2.i2c_connection_helper import I2C_Connection_Helper
 
 
 @pytest.fixture
@@ -43,18 +47,26 @@ def asc_address_space_size():
     yield 10
 
 
+@pytest.fixture
+def asc_i2c_connection():
+    with patch('i2c_gui2.i2c_connection_helper.I2C_Connection_Helper') as mock_class:
+        yield mock_class
+
+
 # @pytest.fixture(scope="function", params=[10, 20])
 # def asc_address_space_size(request):
 #    yield request.param
 
 
 @pytest.fixture
-def asc_test(asc_name, asc_i2c_address, asc_address_space_size, logger):
+def asc_test(asc_name, asc_i2c_address, asc_address_space_size, asc_i2c_connection, logger):
+    conn = I2C_Connection_Helper(max_seq_byte=8, no_connect=True)
     yield Address_Space_Controller(
         name=asc_name,
         i2c_address=asc_i2c_address,
         address_space_size=asc_address_space_size,
         logger=logger,
+        i2c_connection=conn,
     )
 
 
