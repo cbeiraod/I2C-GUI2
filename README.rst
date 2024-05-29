@@ -106,6 +106,7 @@ Then install a few other dependencies which are only used in development:
 
   python -m pip install --upgrade pytest
   python -m pip install --upgrade pytest-cov
+  python -m pip install --upgrade pytest-mock
   python -m pip install --upgrade pre-commit
   python -m pip install --upgrade bump2version
   python -m pip install --upgrade black
@@ -138,6 +139,8 @@ Use the command ``pytest`` to run all the tests.
 We use the pytest-cov plugin to get coverage reports from pytest.
 Use the command ``pytest --cov --cov-report term-missing`` to run all the tests and get a coverage report.
 Use the command ``pytest --cov --cov-report term-missing --cov-report html`` to get an html report with detailed information.
+
+We use the pytest-mock plugin in order to use the mock class in our tests.
 
 pre-commit
 ----------
