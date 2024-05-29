@@ -20,6 +20,12 @@
 #    misrepresented as being the original software.
 # 3. This notice may not be removed or altered from any source distribution.
 #############################################################################
+"""The i2c_connection_helper module
+
+Contains the I2C_Connection_Helper class, which is only a base class from which
+derived classes which implement I2C communication should inherit from.
+
+"""
 
 from __future__ import annotations
 
@@ -40,6 +46,28 @@ valid_write_type = ['Normal']
 
 
 class I2C_Connection_Helper:
+    """Base Class to handle an I2C Connection
+
+    This is a base class from which derived classes should inherit and implement
+    the necessary methods.
+
+    This base class sets up many of the internal features of an I2C connection,
+    such as an internal log for logging I2C activity.
+
+    Parameters
+    ----------
+    max_seq_byte
+        The maximum number of bytes which can be transmitted in a single I2C command
+
+    successive_i2c_delay_us
+        The minimum delay in microseconds (us) between successive I2C commands
+
+    no_connect
+        Mostly used for debugging, if set to True, no physical cconnection will
+        actually be attempted, but default values will be returned as I2C responses
+
+    """
+
     def __init__(
         self,
         max_seq_byte: int,
@@ -59,14 +87,51 @@ class I2C_Connection_Helper:
 
     @property
     def logger(self):
+        """The logger property getter method
+
+        This method returns the internal logger of the I2C Connection object
+
+        Returns
+        -------
+        logging.Logger
+            The logger
+        """
         return self._logger
 
     @property
     def connected(self):
+        """The connected property getter method
+
+        This method returns the connection status of the I2C connection
+
+        Returns
+        -------
+        bool
+            The state of the connection
+        """
         return self._is_connected
 
-    def _check_i2c_device(self, device_address: int):
-        raise RuntimeError("Derived classes must implement the individual device access functions: _check_i2c_device")
+    def _check_i2c_device(self, device_address: int) -> bool:
+        """The internal method to check if an i2c device with the given address is connected
+
+        This method must be implemented by the derived classes
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to check. It must be a 7-bit address as per the I2C standard
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+
+        Returns
+        -------
+        bool
+            The presence or absence of the device with the `device_address`
+        """
+        raise RuntimeError("Derived classes must implement the individual device access methods: _check_i2c_device")
 
     def _write_i2c_device_memory(
         self,
@@ -75,7 +140,33 @@ class I2C_Connection_Helper:
         byte_data: list[int],
         write_type: str = 'Normal',
     ):
-        raise RuntimeError("Derived classes must implement the individual device access functions: _write_i2c_device_memory")
+        """The internal method to write byte data to an i2c device with the given address.
+
+        This method must be implemented by the derived classes.
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be written to. The address should have its endianness correctly
+            set such that the MSB of `word_address` is the first byte sent on the I2C lines.
+
+        byte_data
+            The byte data to be written to the I2C device. The data is written to the I2C bus in the order
+            given, so the endianness of the data must be correctly set, assuming the device contains registers
+            larger than 8 bits.
+
+        write_type
+            The type of protocol used for the actual writing procedure to the device.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+        """
+        raise RuntimeError("Derived classes must implement the individual device access methods: _write_i2c_device_memory")
 
     def _read_i2c_device_memory(
         self,
@@ -84,21 +175,124 @@ class I2C_Connection_Helper:
         byte_count: int,
         read_type: str = 'Normal',
     ) -> list[int]:
-        raise RuntimeError("Derived classes must implement the individual device access functions: _read_i2c_device_memory")
+        """The internal method to read byte data from an i2c device with the given address.
+
+        This method must be implemented by the derived classes.
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be read from. The address should have its endianness correctly
+            set such that the MSB of `word_address` is the first byte sent on the I2C lines.
+
+        byte_count
+            The number of bytes to be read from the I2C device. If multybyte registers are to be read, the
+            number of bytes should be given, not the number of words.
+
+        read_type
+            The type of protocol used for the actual reading procedure from the device. Supported protocols
+            are "Normal" and "Repeated Start". The Repeated Start protocol is implemented by the AD5593R chip.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+
+        Returns
+        -------
+        list[int]
+            The list of bytes in the order presented on the I2C bus. If multibyte registers are being read, then
+            the words must be correctly put back together by taking into account the data endianness sent by the
+            I2C device.
+        """
+        raise RuntimeError("Derived classes must implement the individual device access methods: _read_i2c_device_memory")
 
     def _direct_i2c(self, commands: list[I2CMessages]) -> list[int]:
-        raise RuntimeError("Derived classes must implement the individual device access functions: _direct_i2c")
+        """The internal method to send arbitrary I2C messages to the I2C bus.
 
-    def validate_connection_params(self):
+        This method must be implemented by the derived classes.
+
+        Parameters
+        ----------
+        commands
+            The I2C commands to be sent to the I2C bus in the order they are to be sent.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+
+        Returns
+        -------
+        list[int]
+            The list of bytes returned to the I2C Bus in the order presented on the I2C bus.
+        """
+        raise RuntimeError("Derived classes must implement the individual device access methods: _direct_i2c")
+
+    def validate_connection_params(self) -> bool:
+        """The internal method to validate the I2C connection parameters.
+
+        This method must be implemented by the derived classes.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+
+        Returns
+        -------
+        bool
+            Returns True if the parameters are set with good values
+        """
         raise RuntimeError("Derived classes must implement validation of the connection parameters")
 
     def connect(self):
+        """The internal method to connect to the I2C bus.
+
+        This method must be implemented by the derived classes.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+        """
         raise RuntimeError("Derived classes must implement the connect method")
 
     def disconnect(self):
+        """The internal method to disconnect from the I2C bus.
+
+        This method must be implemented by the derived classes.
+
+        Raises
+        ------
+        RuntimeError
+            If the derived class has not implemented this method
+        """
         raise RuntimeError("Derived classes must implement the disconnect method")
 
-    def check_i2c_device(self, device_address: int):
+    def check_i2c_device(self, device_address: int) -> bool:
+        """The user method to check if a device with the `device_address` is connected to the I2C bus.
+
+        This method makes use of the internal method _check_i2c_device
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        Raises
+        ------
+        RuntimeError
+            If there is any problem during runtime
+
+        Returns
+        -------
+        bool
+            The presence or absence of the device with the `device_address`
+        """
         self._logger.info("Trying to find the I2C device with address 0x{:02x}".format(device_address))
 
         if not self._is_connected or self._no_connect:
@@ -122,7 +316,50 @@ class I2C_Connection_Helper:
         word_bitlength: int = 8,
         word_endianness: str = 'big',
         read_type: str = 'Normal',
-    ):
+    ) -> list[int]:
+        """The user method to read register data from a device on the I2C bus with the given `device_address`.
+
+        This method makes use of the internal method _read_i2c_device_memory
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be read from.
+
+        word_count
+            The number of register words to be read from the I2C device.
+
+        address_bitlength
+            The bit length of the address, typical values are 8 and 16.
+
+        address_endianness
+            The endianness of the address as presented on the I2C bus. This parameter does not make any
+            difference for 8-bit addresses.
+
+        word_bitlength
+            The bit length of the register words, typical values are 8 and 16.
+
+        word_endianness
+            The endianness of the register words as presented on the I2C bus. This parameter does not make any
+            difference for 8-bit register words.
+
+        read_type
+            The type of protocol used for the actual reading procedure from the device. Supported protocols
+            are "Normal" and "Repeated Start". The Repeated Start protocol is implemented by the AD5593R chip.
+
+        Raises
+        ------
+        RuntimeError
+            If there is an issue identified during runtime
+
+        Returns
+        -------
+        list[int]
+            The list of word in order. The words have been put together according to the endianness options set.
+        """
         if not self._is_connected:
             raise RuntimeError("You must first connect to a device before trying to read registers from it")
 
@@ -221,6 +458,43 @@ class I2C_Connection_Helper:
         word_endianness: str = 'big',
         write_type: str = 'Normal',
     ):
+        """The user method to write register data to a device on the I2C bus with the given `device_address`.
+
+        This method makes use of the internal method _write_i2c_device_memory
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be written to.
+
+        data
+            The register word data to be written to the I2C device.
+
+        address_bitlength
+            The bit length of the address, typical values are 8 and 16.
+
+        address_endianness
+            The endianness of the address as presented on the I2C bus. This parameter does not make any
+            difference for 8-bit addresses.
+
+        word_bitlength
+            The bit length of the register words, typical values are 8 and 16.
+
+        word_endianness
+            The endianness of the register words as presented on the I2C bus. This parameter does not make any
+            difference for 8-bit register words.
+
+        write_type
+            The type of protocol used for the actual writing procedure to the device.
+
+        Raises
+        ------
+        RuntimeError
+            If there is an issue identified during runtime
+        """
         if not self._is_connected:
             raise RuntimeError("You must first connect to a device before trying to write registers to it")
 

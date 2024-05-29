@@ -97,25 +97,25 @@ def test_connected(i2c_ch_test):
 def test_not_implemented_check_i2c_devices(i2c_ch_test):
     with pytest.raises(Exception) as e_info:
         i2c_ch_test._check_i2c_device(0x21)
-    assert e_info.match(r"^Derived classes must implement the individual device access functions:")
+    assert e_info.match(r"^Derived classes must implement the individual device access methods:")
 
 
 def test_not_implemented_write_i2c_device_memory(i2c_ch_test):
     with pytest.raises(Exception) as e_info:
         i2c_ch_test._write_i2c_device_memory(0x21, 10, [1, 2])
-    assert e_info.match(r"^Derived classes must implement the individual device access functions:")
+    assert e_info.match(r"^Derived classes must implement the individual device access methods:")
 
 
 def test_not_implemented_read_i2c_device_memory(i2c_ch_test):
     with pytest.raises(Exception) as e_info:
         i2c_ch_test._read_i2c_device_memory(0x21, 10, 5)
-    assert e_info.match(r"^Derived classes must implement the individual device access functions:")
+    assert e_info.match(r"^Derived classes must implement the individual device access methods:")
 
 
 def test_not_implemented_direct_i2c(i2c_ch_test):
     with pytest.raises(Exception) as e_info:
         i2c_ch_test._direct_i2c([I2CMessages.START, I2CMessages.STOP])
-    assert e_info.match(r"^Derived classes must implement the individual device access functions:")
+    assert e_info.match(r"^Derived classes must implement the individual device access methods:")
 
 
 def test_not_implemented_validate_connection_params(i2c_ch_test):
