@@ -240,23 +240,6 @@ class I2C_Connection_Helper:
         """
         raise RuntimeError("Derived classes must implement the individual device access methods: _direct_i2c")
 
-    def validate_connection_params(self) -> bool:
-        """The internal method to validate the I2C connection parameters.
-
-        This method must be implemented by the derived classes.
-
-        Raises
-        ------
-        RuntimeError
-            If the derived class has not implemented this method
-
-        Returns
-        -------
-        bool
-            Returns True if the parameters are set with good values
-        """
-        raise RuntimeError("Derived classes must implement validation of the connection parameters")
-
     def check_i2c_device(self, device_address: int) -> bool:
         """The user method to check if a device with the `device_address` is connected to the I2C bus.
 
