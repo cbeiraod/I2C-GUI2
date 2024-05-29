@@ -124,18 +124,6 @@ def test_not_implemented_validate_connection_params(i2c_ch_test):
     assert e_info.match(r"^Derived classes must implement validation of the connection parameters")
 
 
-def test_not_implemented_connect(i2c_ch_test):
-    with pytest.raises(Exception) as e_info:
-        i2c_ch_test.connect()
-    assert e_info.match(r"^Derived classes must implement the connect method")
-
-
-def test_not_implemented_disconnect(i2c_ch_test):
-    with pytest.raises(Exception) as e_info:
-        i2c_ch_test.disconnect()
-    assert e_info.match(r"^Derived classes must implement the disconnect method")
-
-
 @pytest.fixture()
 def connect_return_value():
     yield None

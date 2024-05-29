@@ -257,30 +257,6 @@ class I2C_Connection_Helper:
         """
         raise RuntimeError("Derived classes must implement validation of the connection parameters")
 
-    def connect(self):
-        """The internal method to connect to the I2C bus.
-
-        This method must be implemented by the derived classes.
-
-        Raises
-        ------
-        RuntimeError
-            If the derived class has not implemented this method
-        """
-        raise RuntimeError("Derived classes must implement the connect method")
-
-    def disconnect(self):
-        """The internal method to disconnect from the I2C bus.
-
-        This method must be implemented by the derived classes.
-
-        Raises
-        ------
-        RuntimeError
-            If the derived class has not implemented this method
-        """
-        raise RuntimeError("Derived classes must implement the disconnect method")
-
     def check_i2c_device(self, device_address: int) -> bool:
         """The user method to check if a device with the `device_address` is connected to the I2C bus.
 
