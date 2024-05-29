@@ -139,6 +139,7 @@ class I2C_Connection_Helper:
         word_address: int,
         byte_data: list[int],
         write_type: str = 'Normal',
+        address_bitlength: int = 8,
     ):
         """The internal method to write byte data to an i2c device with the given address.
 
@@ -161,6 +162,9 @@ class I2C_Connection_Helper:
         write_type
             The type of protocol used for the actual writing procedure to the device.
 
+        address_bitlength
+            The length in bits of the address
+
         Raises
         ------
         RuntimeError
@@ -174,6 +178,7 @@ class I2C_Connection_Helper:
         word_address: int,
         byte_count: int,
         read_type: str = 'Normal',
+        address_bitlength: int = 8,
     ) -> list[int]:
         """The internal method to read byte data from an i2c device with the given address.
 
@@ -195,6 +200,9 @@ class I2C_Connection_Helper:
         read_type
             The type of protocol used for the actual reading procedure from the device. Supported protocols
             are "Normal" and "Repeated Start". The Repeated Start protocol is implemented by the AD5593R chip.
+
+        address_bitlength
+            The length in bits of the address
 
         Raises
         ------
@@ -409,7 +417,9 @@ class I2C_Connection_Helper:
             self._logger.debug("Software emulation (no connect) is enabled, so returning dummy values: {}".format(repr(byte_data)))
         elif self._max_seq_byte is None:
             word_address = address_to_phys(word_address, address_bitlength, address_endianness)
-            byte_data = self._read_i2c_device_memory(device_address, word_address, word_count * word_bytes, read_type=read_type)
+            byte_data = self._read_i2c_device_memory(
+                device_address, word_address, word_count * word_bytes, read_type=read_type, address_bitlength=address_bitlength
+            )
             self._logger.debug("Got data: {}".format(repr(byte_data)))
         else:
             byte_data = []
@@ -436,7 +446,9 @@ class I2C_Connection_Helper:
                 )
 
                 this_block_address = address_to_phys(this_block_address, address_bitlength, address_endianness)
-                this_data = self._read_i2c_device_memory(device_address, this_block_address, bytes_to_read, read_type=read_type)
+                this_data = self._read_i2c_device_memory(
+                    device_address, this_block_address, bytes_to_read, read_type=read_type, address_bitlength=address_bitlength
+                )
                 self._logger.debug("Got data: {}".format(repr(this_data)))
 
                 byte_data += this_data
@@ -536,7 +548,9 @@ class I2C_Connection_Helper:
             self._logger.debug("Writing the full block at once.")
             word_address = address_to_phys(word_address, address_bitlength, address_endianness)
             byte_data = word_list_to_bytes(data, word_bytes, word_endianness)
-            self._write_i2c_device_memory(device_address, word_address, byte_data, write_type=write_type)
+            self._write_i2c_device_memory(
+                device_address, word_address, byte_data, write_type=write_type, address_bitlength=address_bitlength
+            )
         else:
             words_per_call = floor(self._max_seq_byte / word_bytes)
             if words_per_call == 0:
@@ -564,7 +578,9 @@ class I2C_Connection_Helper:
 
                 this_block_address = address_to_phys(this_block_address, address_bitlength, address_endianness)
                 this_byte_data = word_list_to_bytes(this_data, word_bytes, word_endianness)
-                self._write_i2c_device_memory(device_address, this_block_address, this_byte_data, write_type=write_type)
+                self._write_i2c_device_memory(
+                    device_address, this_block_address, this_byte_data, write_type=write_type, address_bitlength=address_bitlength
+                )
 
                 sleep(self._successive_i2c_delay_us * 10**-6)
 

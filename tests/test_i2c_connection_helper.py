@@ -324,7 +324,7 @@ def test_read_device_memory_no_max_seq_byte(caplog, i2c_ch_test, words, bitlengt
         word_list = i2c_ch_test.read_device_memory(0x21, 0x00, words, word_bitlength=bitlength, word_endianness=endianness)
 
         function.assert_called_once()
-        function.assert_has_calls([call(0x21, 0x00, words * ceil(bitlength / 8), read_type="Normal")])
+        function.assert_has_calls([call(0x21, 0x00, words * ceil(bitlength / 8), read_type="Normal", address_bitlength=8)])
 
         log_tuples = caplog.record_tuples
         assert len(log_tuples) == 2
@@ -361,7 +361,7 @@ def test_write_device_memory_no_max_seq_byte(caplog, i2c_ch_test, words, bitleng
         i2c_ch_test.write_device_memory(0x21, 0x00, word_list, word_bitlength=bitlength, word_endianness=endianness)
 
         function.assert_called_once()
-        function.assert_has_calls([call(0x21, 0x00, byte_list, write_type="Normal")])
+        function.assert_has_calls([call(0x21, 0x00, byte_list, write_type="Normal", address_bitlength=8)])
 
         log_tuples = caplog.record_tuples
         assert len(log_tuples) == 2
@@ -404,7 +404,13 @@ def test_read_device_memory(caplog, i2c_ch_test, words, bitlength, endianness, i
 
             function.assert_has_calls(
                 [
-                    call(0x21, int(i * addr_step), min(words * ceil(bitlength / 8), i2c_ch_max_seq_byte), read_type="Normal")
+                    call(
+                        0x21,
+                        int(i * addr_step),
+                        min(words * ceil(bitlength / 8), i2c_ch_max_seq_byte),
+                        read_type="Normal",
+                        address_bitlength=8,
+                    )
                     for i in range(num_calls)
                 ]
             )
@@ -476,6 +482,7 @@ def test_write_device_memory(caplog, i2c_ch_test, words, bitlength, endianness, 
                             i * i2c_ch_max_seq_byte : i * i2c_ch_max_seq_byte + min(words * ceil(bitlength / 8), i2c_ch_max_seq_byte)
                         ],
                         write_type="Normal",
+                        address_bitlength=8,
                     )
                     for i in range(num_calls)
                 ]
