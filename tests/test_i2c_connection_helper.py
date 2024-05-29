@@ -131,24 +131,29 @@ def test_not_implemented_disconnect(i2c_ch_test):
 
 
 @pytest.fixture()
-def return_value():
+def connect_return_value():
     yield None
 
 
 @pytest.fixture()
-def fake_connect(monkeypatch, return_value):
+def fake_connect(monkeypatch, connect_return_value):
     def replace():
-        return return_value
+        return connect_return_value
 
     monkeypatch.setattr(I2C_Connection_Helper, "_check_i2c_device", lambda *args, **kwargs: replace())
 
 
+@pytest.mark.parametrize('connect_return_value', [True, False])
+def test_fake_connect_monkeypatch(connect_return_value, fake_connect, i2c_ch_test):
+    assert i2c_ch_test._check_i2c_device(0x21) == connect_return_value
+
+
 @pytest.mark.parametrize('i2c_ch_no_connect', [True, False])
-@pytest.mark.parametrize('return_value', [True, False])
-def test_check_i2c_device(caplog, return_value, fake_connect, i2c_ch_no_connect, i2c_ch_test):
+@pytest.mark.parametrize('connect_return_value', [True, False])
+def test_check_i2c_device(caplog, connect_return_value, fake_connect, i2c_ch_no_connect, i2c_ch_test):
     caplog.set_level(logging.DEBUG, "I2C_Log")
 
-    assert i2c_ch_test._check_i2c_device(0x21) == return_value  # Sanity check the monkeypatching works
+    assert i2c_ch_test._check_i2c_device(0x21) == connect_return_value  # Sanity check the monkeypatching works
 
     i2c_ch_test._is_connected = not i2c_ch_no_connect
 
@@ -157,7 +162,7 @@ def test_check_i2c_device(caplog, return_value, fake_connect, i2c_ch_no_connect,
     if i2c_ch_no_connect:
         assert not found
     else:
-        if return_value is False:
+        if connect_return_value is False:
             assert not found
         else:
             assert found
