@@ -26,5 +26,6 @@ from __future__ import annotations
 __version__ = '0.0.2'
 
 from .i2c_messages import I2CMessages
+from .i2c_usb_iss_helper import USB_ISS_Helper
 
-__all__ = ["I2CMessages"]
+__all__ = ["I2CMessages", "USB_ISS_Helper"]
