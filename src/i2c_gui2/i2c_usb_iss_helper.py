@@ -232,6 +232,20 @@ class USB_ISS_Helper(I2C_Connection_Helper):
         return self._baud_rate
 
     def _check_i2c_device(self, device_address: int) -> bool:
+        """The internal method to check if an i2c device with the given address is connected
+
+        This method overrides the one from the base class.
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to check. It must be a 7-bit address as per the I2C standard
+
+        Returns
+        -------
+        bool
+            The presence or absence of the device with the `device_address`
+        """
         return self._iss.i2c.test(device_address)
 
     def _write_i2c_device_memory(
@@ -242,6 +256,35 @@ class USB_ISS_Helper(I2C_Connection_Helper):
         write_type: str = 'Normal',
         address_bitlength: int = 8,
     ):
+        """The internal method to write byte data to an i2c device with the given address.
+
+        This method overrides the one from the base class.
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be written to. The address should have its endianness correctly
+            set such that the MSB of `word_address` is the first byte sent on the I2C lines.
+
+        byte_data
+            The byte data to be written to the I2C device. The data is written to the I2C bus in the order
+            given, so the endianness of the data must be correctly set, assuming the device contains registers
+            larger than 8 bits.
+
+        write_type
+            The type of protocol used for the actual writing procedure to the device.
+
+        address_bitlength
+            The length in bits of the address
+
+        Raises
+        ------
+        RuntimeError
+            If a not supported configuration is chosen
+        """
         if write_type == 'Normal':
             if address_bitlength == 16:
                 self._iss.i2c.write_ad2(device_address, word_address, byte_data)
@@ -260,6 +303,42 @@ class USB_ISS_Helper(I2C_Connection_Helper):
         read_type: str = 'Normal',
         address_bitlength: int = 8,
     ) -> list[int]:
+        """The internal method to read byte data from an i2c device with the given address.
+
+        This method overrides the one from the base class.
+
+        Parameters
+        ----------
+        device_address
+            The I2C address of the device to write to. It must be a 7-bit address as per the I2C standard.
+
+        word_address
+            The address of the first byte to be read from. The address should have its endianness correctly
+            set such that the MSB of `word_address` is the first byte sent on the I2C lines.
+
+        byte_count
+            The number of bytes to be read from the I2C device. If multybyte registers are to be read, the
+            number of bytes should be given, not the number of words.
+
+        read_type
+            The type of protocol used for the actual reading procedure from the device. Supported protocols
+            are "Normal" and "Repeated Start". The Repeated Start protocol is implemented by the AD5593R chip.
+
+        address_bitlength
+            The length in bits of the address
+
+        Raises
+        ------
+        RuntimeError
+            If a not supported configuration is chosen
+
+        Returns
+        -------
+        list[int]
+            The list of bytes in the order presented on the I2C bus. If multibyte registers are being read, then
+            the words must be correctly put back together by taking into account the data endianness sent by the
+            I2C device.
+        """
         if read_type == 'Normal':
             if address_bitlength == 16:
                 return self._iss.i2c.read_ad2(device_address, word_address, byte_count)
@@ -317,6 +396,25 @@ class USB_ISS_Helper(I2C_Connection_Helper):
             raise RuntimeError("Unknown read type chosen for the USB ISS")
 
     def _direct_i2c(self, commands: list[I2CMessages]) -> list[int]:  # noqa: C901
+        """The internal method to send arbitrary I2C messages to the I2C bus.
+
+        This method overrides the one from the base class.
+
+        Parameters
+        ----------
+        commands
+            The I2C commands to be sent to the I2C bus in the order they are to be sent.
+
+        Raises
+        ------
+        RuntimeError
+            If an unknown command is trying to be sent
+
+        Returns
+        -------
+        list[int]
+            The list of bytes returned to the I2C Bus in the order presented on the I2C bus.
+        """
         direct_msg = []
 
         idx = 0
