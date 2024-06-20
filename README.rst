@@ -191,6 +191,17 @@ twine
 The twine tool is used to upload the package to PyPI.
 Once the distribution files are generated with the build tool, then upload them with: ``python -m twine upload --repository testpypi dist/*``
 
+----------------
+Github Workflows
+----------------
+Currently there is a single github workflow which builds and publishes a properly tagged version of the repo onto PyPI.
+We plan to use other github workflows as our CI tools, to be added.
+
+publish-to-test-pypi
+--------------------
+This workflow publishes to PyPI a properly tagged commit of the repository.
+Some initial setup in needed on PyPI so that things run smoothly, but once running it should continue to function without intervention needed.
+
 -----------------
 Restructured Text
 -----------------
