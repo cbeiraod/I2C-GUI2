@@ -33,6 +33,7 @@ import logging
 from math import ceil
 from math import floor
 from time import sleep
+from time import time_ns
 
 from .functions import address_to_phys
 from .functions import bytes_to_word_list
@@ -84,6 +85,8 @@ class I2C_Connection_Helper:
         self._logger.setLevel(logging.NOTSET)
 
         self._is_connected = False
+
+        self._lastI2COperation = time_ns()
 
     @property
     def logger(self):
@@ -266,6 +269,11 @@ class I2C_Connection_Helper:
             self._logger.info("The I2C device is not connected or you are using software emulated mode.")
             return False
 
+        now = time_ns()
+        if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
+            sleep(self._successive_i2c_delay_us * 10**-6)
+            self._lastI2COperation = now
+
         if not self._check_i2c_device(device_address):
             self._logger.info("The I2C device 0x{:02x} can not be found.".format(device_address))
             return False
@@ -376,9 +384,13 @@ class I2C_Connection_Helper:
             self._logger.debug("Software emulation (no connect) is enabled, so returning dummy values: {}".format(repr(byte_data)))
         elif self._max_seq_byte is None:
             word_address = address_to_phys(word_address, address_bitlength, address_endianness)
+            now = time_ns()
+            if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
+                sleep(self._successive_i2c_delay_us * 10**-6)
             byte_data = self._read_i2c_device_memory(
                 device_address, word_address, word_count * word_bytes, read_type=read_type, address_bitlength=address_bitlength
             )
+            self._lastI2COperation = now
             self._logger.debug("Got data: {}".format(repr(byte_data)))
         else:
             byte_data = []
@@ -405,13 +417,16 @@ class I2C_Connection_Helper:
                 )
 
                 this_block_address = address_to_phys(this_block_address, address_bitlength, address_endianness)
+                now = time_ns()
+                if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
+                    sleep(self._successive_i2c_delay_us * 10**-6)
                 this_data = self._read_i2c_device_memory(
                     device_address, this_block_address, bytes_to_read, read_type=read_type, address_bitlength=address_bitlength
                 )
+                self._lastI2COperation = now
                 self._logger.debug("Got data: {}".format(repr(this_data)))
 
                 byte_data += this_data
-                sleep(self._successive_i2c_delay_us * 10**-6)
 
             # Clear the progress from the function above
 
@@ -507,9 +522,13 @@ class I2C_Connection_Helper:
             self._logger.debug("Writing the full block at once.")
             word_address = address_to_phys(word_address, address_bitlength, address_endianness)
             byte_data = word_list_to_bytes(data, word_bytes, word_endianness)
+            now = time_ns()
+            if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
+                sleep(self._successive_i2c_delay_us * 10**-6)
             self._write_i2c_device_memory(
                 device_address, word_address, byte_data, write_type=write_type, address_bitlength=address_bitlength
             )
+            self._lastI2COperation = now
         else:
             words_per_call = floor(self._max_seq_byte / word_bytes)
             if words_per_call == 0:
@@ -537,10 +556,12 @@ class I2C_Connection_Helper:
 
                 this_block_address = address_to_phys(this_block_address, address_bitlength, address_endianness)
                 this_byte_data = word_list_to_bytes(this_data, word_bytes, word_endianness)
+                now = time_ns()
+                if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
+                    sleep(self._successive_i2c_delay_us * 10**-6)
                 self._write_i2c_device_memory(
                     device_address, this_block_address, this_byte_data, write_type=write_type, address_bitlength=address_bitlength
                 )
-
-                sleep(self._successive_i2c_delay_us * 10**-6)
+                self._lastI2COperation = now
 
             # Clear the progress from the function above
