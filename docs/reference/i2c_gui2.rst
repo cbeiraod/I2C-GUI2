@@ -33,6 +33,14 @@ i2c\_gui2.i2c\_connection\_helper module
    :undoc-members:
    :show-inheritance:
 
+i2c\_gui2.i2c\_usb\_iss\_helper module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.i2c_usb_iss_helper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 i2c\_gui2.etroc1\_gui module
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
