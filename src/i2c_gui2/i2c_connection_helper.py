@@ -272,7 +272,7 @@ class I2C_Connection_Helper:
         now = time_ns()
         if now - self._lastI2COperation < self._successive_i2c_delay_us * 1000:
             sleep(self._successive_i2c_delay_us * 10**-6)
-            self._lastI2COperation = now
+        self._lastI2COperation = now
 
         if not self._check_i2c_device(device_address):
             self._logger.info("The I2C device 0x{:02x} can not be found.".format(device_address))
