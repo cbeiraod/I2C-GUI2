@@ -1,9 +1,11 @@
 Changelog
 =========
 
-Current (2024-05-29)
+Current (2024-06-21)
 --------------------
 
+* Added additional log levels
+* Implemented the usb_iss_helper class derived from the i2c_connection_helper base class
 * Implemented the i2c_connection_helper base class
 * Added word_list_to_bytes and bytes_to_word_list functions
 * Added address byte adjustment function for different endianness and bit lengths
