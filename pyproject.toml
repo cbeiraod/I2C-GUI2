@@ -32,6 +32,7 @@ dependencies = [
 "Bug Tracker" = "https://github.com/cbeiraod/I2C-GUI2/issues"
 
 [project.scripts]
+i2c-version = "i2c_gui2.entry_points:version"
 etroc1-gui = "i2c_gui2.etroc1_gui:main"
 etroc2-gui = "i2c_gui2.etroc2_gui:main"
 
