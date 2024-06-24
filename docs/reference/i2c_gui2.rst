@@ -64,3 +64,27 @@ i2c\_gui2.chips submodule
    :members:
    :undoc-members:
    :show-inheritance:
+
+i2c\_gui2.chips.address\_space\_controller module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.chips.address_space_controller
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+i2c\_gui2.chips.base\_chip module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.chips.base_chip
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+i2c\_gui2.chips.etroc2\_chip module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.chips.etroc2_chip
+   :members:
+   :undoc-members:
+   :show-inheritance:

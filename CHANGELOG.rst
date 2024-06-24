@@ -4,6 +4,7 @@ Changelog
 Current (2024-06-21)
 --------------------
 
+* Quickly added address_space_controller, base_chip and etroc2_chip (without associated testing infrastructure) so we can be ready for the next SEU campaign
 * Added additional log levels
 * Implemented the usb_iss_helper class derived from the i2c_connection_helper base class
 * Implemented the i2c_connection_helper base class

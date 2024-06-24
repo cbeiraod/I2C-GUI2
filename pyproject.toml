@@ -14,7 +14,7 @@ description = "A new and improved I2C library with a GUI"
 readme = "PyPIREADME.md"
 requires-python = ">=3.7"
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: zlib/libpng License",
     "Operating System :: OS Independent",
@@ -43,7 +43,7 @@ addopts = [
 
 [tool.black]
 line-length = 140
-target-version = ["py38", "py39", "py310", "py311"]
+target-version = ["py39", "py310", "py311", "py312"]
 skip-string-normalization = true
 required-version = 24
 extend-exclude = '''
@@ -60,8 +60,8 @@ extend-exclude = '''
 
 [tool.flake8]
 # Default: E121,E123,E126,E226,E24,E704,W503,W504
+extend-ignore = ['E203','E501','E701']
 extend-select = ['B950']
-ignore = ['E203','E501','E701']
 exclude = ".git, .github, venv, .mypy_cache, .pytest_cache, build, dist, __pycache__"
 per-file-ignores = [
     '__init__.py:F401',
