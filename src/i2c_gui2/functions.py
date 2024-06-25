@@ -24,6 +24,49 @@
 from __future__ import annotations
 
 import logging
+import re
+
+
+def is_valid_hostname(hostname: str):
+    if hostname[-1] == ".":
+        # strip exactly one dot from the right, if present
+        hostname = hostname[:-1]
+    if len(hostname) > 253:
+        return False
+
+    labels = hostname.split(".")
+
+    if len(labels) == 1:
+        if labels[0] != "localhost":
+            return False
+
+    # the TLD must not be all-numeric
+    if re.match(r"[0-9]+$", labels[-1]):
+        return False
+
+    allowed = re.compile(r"(?!-)[a-z0-9-]{1,63}(?<!-)$", re.IGNORECASE)
+    return all(allowed.match(label) for label in labels)
+
+
+def is_valid_ip(hostname: str):
+    fields = hostname.split(".")
+
+    if len(fields) != 4:
+        return False
+
+    allowed = re.compile(r"\d{1,3}$")
+
+    return all(allowed.match(field) and int(field) < 256 and int(field) >= 0 for field in fields)
+
+
+def validate_hostname(hostname: str):
+    if is_valid_hostname(hostname):
+        return True
+
+    if is_valid_ip(hostname):
+        return True
+
+    return False
 
 
 # Function from: https://stackoverflow.com/a/35804945
