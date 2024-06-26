@@ -1,9 +1,10 @@
 Changelog
 =========
 
-Current (2024-06-26)
---------------------
+0.1.2 (2024-06-26)
+------------------
 
+* Added a method for effiecient reading of etroc2
 * Started adding GUI classes
 
 0.1.1 (2024-06-26)
