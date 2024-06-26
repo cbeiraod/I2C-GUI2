@@ -235,6 +235,12 @@ class Address_Space_Controller:
     def get_register(self, block_name, register_name):
         return self._memory[self._register_map[block_name + "/" + register_name]]
 
+    def get_register_address(self, block_name, register_name):
+        return self._register_map[block_name + "/" + register_name]
+
+    def set_register(self, block_name, register_name, value):
+        self._memory[self._register_map[block_name + "/" + register_name]] = value
+
     def read_memory_block(self, base_address, word_count):
         if self._i2c_address is None:
             self._logger.error(f"Unable to read address space '{self._name}' because the i2c address is not set")
