@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.4 (2024-06-26)
+------------------
+
+* Added reading of the SEU Counters to the efficient reading
+
 0.1.3 (2024-06-26)
 ------------------
 

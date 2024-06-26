@@ -1595,7 +1595,7 @@ register_decoding = {
 
 efficient_block_lengths = {
     "ETROC2": {
-        "Peripheral Config": 32,
+        "Peripheral Config": 34,
         "Peripheral Status": 16,
         "Pixel Config": 32,
         "Pixel Status": 8,
@@ -1837,4 +1837,8 @@ class ETROC2_Chip(Base_Chip):
                 else:
                     length = efficient_block_lengths[address_space_name][block_name]
                 address_space.read_memory_block(address_space._blocks[block_name]["Base Address"], length)
+
+                # Add reading of the SEU counters
+                if address_space_name == "ETROC2" and block_name == "Peripheral Status":
+                    address_space.read_memory_block(0x0120, 4)
             # self.read_all_address_space(address_space)
