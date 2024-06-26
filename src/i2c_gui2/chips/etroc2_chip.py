@@ -1826,6 +1826,15 @@ class ETROC2_Chip(Base_Chip):
         for address_space_name in self._address_space:
             address_space: Address_Space_Controller = self._address_space[address_space_name]
             for block_name in address_space._blocks:
-                length = efficient_block_lengths[address_space_name][block_name]
+                if (
+                    block_name in register_model[address_space_name]["Register Blocks"]
+                    and "Indexer" in register_model[address_space_name]["Register Blocks"][block_name]
+                ):
+                    continue
+
+                if block_name not in register_model[address_space_name]["Register Blocks"]:
+                    length = efficient_block_lengths[address_space_name][block_name.split(":")[0]]
+                else:
+                    length = efficient_block_lengths[address_space_name][block_name]
                 address_space.read_memory_block(address_space._blocks[block_name]["Base Address"], length)
             # self.read_all_address_space(address_space)
