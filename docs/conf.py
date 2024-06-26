@@ -20,7 +20,7 @@ project = 'I2C-GUI2'
 year = '2024'
 author = 'Cristóvão B. da Cruz e Silva'
 copyright = '{0}, {1}'.format(year, author)
-version = release = '0.1.0'
+version = release = '0.1.1'
 
 pygments_style = 'trac'
 templates_path = ['.']
