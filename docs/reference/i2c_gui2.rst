@@ -88,3 +88,19 @@ i2c\_gui2.chips.etroc2\_chip module
    :members:
    :undoc-members:
    :show-inheritance:
+
+i2c\_gui2.chips.etroc1\_chip module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.chips.etroc1_chip
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+i2c\_gui2.chips.ad5593r\_chip module
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. automodule:: i2c_gui2.chips.ad5593r_chip
+   :members:
+   :undoc-members:
+   :show-inheritance:

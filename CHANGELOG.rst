@@ -1,7 +1,12 @@
 Changelog
 =========
 
-0.1.0 (2024-06-21)
+Current (2024-06-26)
+--------------------
+
+* Added classes for ETROC1 chip and AD5593R chip
+
+0.1.0 (2024-06-24)
 ------------------
 
 * Quickly added address_space_controller, base_chip and etroc2_chip (without associated testing infrastructure) so we can be ready for the next SEU campaign
