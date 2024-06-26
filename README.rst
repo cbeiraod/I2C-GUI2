@@ -50,9 +50,9 @@ I2C-GUI++
     :alt: Supported implementations
     :target: https://pypi.org/project/I2C-GUI2
 
-.. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.1.3.svg
+.. |commits-since| image:: https://img.shields.io/github/commits-since/cbeiraod/I2C-GUI2/v0.1.4.svg
     :alt: Commits since latest release
-    :target: https://github.com/cbeiraod/I2c-GUI2/compare/v0.1.3...main
+    :target: https://github.com/cbeiraod/I2c-GUI2/compare/v0.1.4...main
 
 .. end-badges
 
