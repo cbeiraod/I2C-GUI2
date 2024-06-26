@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Current (2024-06-26)
---------------------
+0.1.1 (2024-06-26)
+------------------
 
 * Added classes for ETROC1 chip and AD5593R chip
 
