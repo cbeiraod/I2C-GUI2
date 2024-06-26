@@ -26,10 +26,62 @@ import pytest
 
 from i2c_gui2.functions import address_to_phys
 from i2c_gui2.functions import bytes_to_word_list
+from i2c_gui2.functions import is_valid_hostname
+from i2c_gui2.functions import is_valid_ip
 from i2c_gui2.functions import swap_endian_16bit
 from i2c_gui2.functions import swap_endian_32bit
 from i2c_gui2.functions import valid_i2c_address
+from i2c_gui2.functions import validate_hostname
 from i2c_gui2.functions import word_list_to_bytes
+
+
+def test_is_valid_hostname_localhost():
+    assert is_valid_hostname("localhost")
+
+
+def test_is_valid_hostname_google():
+    assert is_valid_hostname("google.com")
+
+
+def test_is_valid_hostname_google_rightdot():
+    assert is_valid_hostname("google.com.")
+
+
+def test_is_valid_hostname_numeric():
+    assert not is_valid_hostname("12345.123")
+
+
+def test_is_valid_hostname_name():
+    assert not is_valid_hostname("name")
+
+
+def test_is_valid_hostname_with_space():
+    assert not is_valid_hostname("na me.com")
+    assert not is_valid_hostname("name.c om")
+
+
+def test_is_valid_hostname_too_long():
+    assert not is_valid_hostname(
+        "This is a very long string which should not be found to be a valid hostname but we should test it anyway just to be sure. The string really has to be very long indeed because the maximum length is 253 characters, so it is not as short as it initially sounds..."
+    )
+
+
+def test_is_valid_ip():
+    assert is_valid_ip("192.168.1.0")
+
+
+def test_is_valid_ip_notIP():
+    assert not is_valid_ip("192.168.1.300")
+    assert not is_valid_ip("192.168.1")
+
+
+def test_validate_hostname():
+    assert validate_hostname("google.com")
+    assert validate_hostname("192.168.1.0")
+
+
+def test_validate_hostname_notValid():
+    assert not validate_hostname("192.188.2")
 
 
 def test_swap_endian_16bit():
