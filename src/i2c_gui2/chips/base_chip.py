@@ -370,22 +370,65 @@ class Base_Chip:
             register = position[0]
             self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
 
-    def get_register_value(self, address_space_name: str, block_name: str, register: str, no_message: bool = True):
-        self._logger.detailed_trace(f'Base_Chip::get_register_value("{address_space_name}", "{block_name}", "{register}", {no_message})')
-        block_ref, _ = self._gen_block_ref_from_indexers(
-            address_space_name=address_space_name,
-            block_name=block_name,
-            full_array=False,
-        )
+    def get_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str):
+        self._logger.detailed_trace(f'Base_Chip::get_decoded_value("{address_space_name}", "{block_name}", "{decoded_value_name}")')
+        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
-        if not no_message:
-            self._logger.info(
-                "Reading register {} from block {} of address space {} of chip {}".format(
-                    register, block_ref, address_space_name, self._chip_name
-                )
-            )
-        address_space: Address_Space_Controller = self._address_space[address_space_name]
-        address_space.read_register(block_ref, register)
+        value = 0
+        for position in value_info['position']:
+            register = position[0]
+            use_bits_max, use_bits_min = position[1].split("-")
+            position_bits = int(position[2].split("-")[1])
+            register_value = self.__getitem__((address_space_name, block_name, register))
+
+            use_bits_min = int(use_bits_min)
+            use_bits_max = int(use_bits_max)
+
+            use_bit_mask = 0
+            for i in range(use_bits_max + 1):
+                if i >= use_bits_min and i <= use_bits_max:
+                    use_bit_mask += 0x1 << i
+            transform_value = (register_value & use_bit_mask) >> use_bits_min
+            value += transform_value << position_bits
+
+        return value
+
+    def set_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, value: int):
+        self._logger.detailed_trace(f'Base_Chip::set_decoded_value("{address_space_name}", "{block_name}", "{decoded_value_name}")')
+        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
+
+        bit_length = value_info['bits']
+        value_bitmask = 0
+        for i in range(bit_length):
+            value_bitmask += 0x1 << i
+        value = value & value_bitmask
+
+        for position in value_info['position']:
+            register = position[0]
+            reg_bits_max, reg_bits_min = position[1].split("-")
+            value_bits_max, value_bits_min = position[2].split("-")
+
+            reg_bits_min = int(reg_bits_min)
+            reg_bits_max = int(reg_bits_max)
+            value_bits_min = int(value_bits_min)
+            value_bits_max = int(value_bits_max)
+
+            register_value = self.__getitem__((address_space_name, block_name, register))
+            register_mask = 0x0
+            for i in range(reg_bits_max + 1):
+                if i >= reg_bits_min and i <= reg_bits_max:
+                    register_mask += 0x1 << i
+            register_mask = ~register_mask
+            register_value = register_value & register_mask  # Remove bits we are trying to set
+
+            value_tmp = value >> value_bits_min
+            value_mask = 0
+            for i in range(value_bits_max - value_bits_min + 1):
+                value_mask += 0x1 << i
+
+            register_value += (value_tmp & value_mask) << reg_bits_min
+
+            register_value = self.__setitem__((address_space_name, block_name, register), register_value)
 
     def save_pickle_file(self, config_file: str, object):
         save_object = {
