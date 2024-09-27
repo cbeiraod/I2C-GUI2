@@ -4,7 +4,7 @@ Changelog
 Current (2024-09-27)
 --------------------
 
-1.1.5 (2024-09-27)
+0.1.5 (2024-09-27)
 --------------------
 
 * Added functions to read and write the registers that make up a decoded registers
