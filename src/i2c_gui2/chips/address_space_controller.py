@@ -134,9 +134,6 @@ class Address_Space_Controller:
                         full_register_name = base_name + "/" + register
                         self._register_map[full_register_name] = full_address
                         self._read_only_map[full_address] = read_only
-
-                        self._register_map[base_name + "/" + register] = full_address
-                        self._read_only_map[full_address] = read_only
                         self._memory[full_address] = default
                         self._defaults[full_address] = default
 
@@ -156,10 +153,22 @@ class Address_Space_Controller:
         return self._address_space_size
 
     def __getitem__(self, index):
-        return self._memory[index]
+        if isinstance(index, int):
+            return self._memory[index]
+        elif isinstance(index, tuple):
+            block_name, register_name = index
+            return self._memory[self._register_map[block_name + "/" + register_name]]
+        else:
+            raise RuntimeError("Unknown index for address space controller get")
 
     def __setitem__(self, index, value):
-        self._memory[index] = value
+        if isinstance(index, int):
+            self._memory[index] = value
+        elif isinstance(index, tuple):
+            block_name, register_name = index
+            self._memory[self._register_map[block_name + "/" + register_name]] = value
+        else:
+            raise RuntimeError("Unknown index for address space controller set")
 
     def __iter__(self):
         for i in self._memory:

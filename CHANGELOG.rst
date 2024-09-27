@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Current (2024-09-27)
+--------------------
+
+* Added functions to read and write the registers that make up a decoded registers
+* Added a new indexing mode for the Address Space Controller to use the register block and name instead of the address only
+
 0.1.4 (2024-06-26)
 ------------------
 
