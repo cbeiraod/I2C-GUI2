@@ -69,6 +69,28 @@ class Base_Chip:
             #    decoding = self._register_decoding[address_space]
             self._register_address_space(address_space, None, self._register_model[address_space])  # , decoding)
 
+    def __getitem__(self, index):
+        address_space_name, block_name, register = index
+
+        block_ref, _ = self._gen_block_ref_from_indexers(
+            address_space_name=address_space_name,
+            block_name=block_name,
+            full_array=False,
+        )
+
+        return self._address_space[address_space_name][block_ref, register]
+
+    def __setitem__(self, index, value):
+        address_space_name, block_name, register = index
+
+        block_ref, _ = self._gen_block_ref_from_indexers(
+            address_space_name=address_space_name,
+            block_name=block_name,
+            full_array=False,
+        )
+
+        self._address_space[address_space_name][block_ref, register] = value
+
     @property
     def id(self):
         return self._id
@@ -347,6 +369,23 @@ class Base_Chip:
         for position in value_info['position']:
             register = position[0]
             self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
+
+    def get_register_value(self, address_space_name: str, block_name: str, register: str, no_message: bool = True):
+        self._logger.detailed_trace(f'Base_Chip::get_register_value("{address_space_name}", "{block_name}", "{register}", {no_message})')
+        block_ref, _ = self._gen_block_ref_from_indexers(
+            address_space_name=address_space_name,
+            block_name=block_name,
+            full_array=False,
+        )
+
+        if not no_message:
+            self._logger.info(
+                "Reading register {} from block {} of address space {} of chip {}".format(
+                    register, block_ref, address_space_name, self._chip_name
+                )
+            )
+        address_space: Address_Space_Controller = self._address_space[address_space_name]
+        address_space.read_register(block_ref, register)
 
     def save_pickle_file(self, config_file: str, object):
         save_object = {
