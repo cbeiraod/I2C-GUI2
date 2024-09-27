@@ -91,7 +91,7 @@ def test_init_address_space_size(asc_address_space_size, asc_test):
     assert len(asc_test) == asc_address_space_size
 
 
-def test_getitem(asc_test):
+def test_getitem_address(asc_test):
     assert asc_test[0] is None
     asc_test._memory[0] = 20
     assert asc_test[0] == 20
@@ -99,11 +99,28 @@ def test_getitem(asc_test):
     assert asc_test[0] == 10
 
 
-def test_setitem(asc_test):
+def test_getitem_indexed(asc_test):
+    asc_test._register_map["A/B"] = 5
+    assert asc_test["A", "B"] is None
+    asc_test._memory[5] = 20
+    assert asc_test["A", "B"] == 20
+    asc_test._memory[5] = 10
+    assert asc_test["A", "B"] == 10
+
+
+def test_setitem_address(asc_test):
     asc_test[0] = 20
     assert asc_test._memory[0] == 20
     asc_test[0] = 10
     assert asc_test._memory[0] == 10
+
+
+def test_setitem_indexed(asc_test):
+    asc_test._register_map["A/B"] = 5
+    asc_test["A", "B"] = 20
+    assert asc_test._memory[5] == 20
+    asc_test["A", "B"] = 10
+    assert asc_test._memory[5] == 10
 
 
 def test_iter(asc_address_space_size, asc_test):
