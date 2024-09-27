@@ -1802,25 +1802,28 @@ class ETROC2_Chip(Base_Chip):
             )
 
     #  We need to overload the write register method so that we intercept the call for the broadcast feature
+    def write_decoded_value(
+        self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False
+    ):
+        if (
+            address_space_name == "ETROC2"
+            and "Indexer" in self._register_model[address_space_name]["Register Blocks"][block_name]
+            and self.broadcast
+        ):
+            value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
-    #    def write_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False):
-    #        broadcast = self._indexer_vars['broadcast']['variable'].get()
-    #        if address_space_name == "ETROC2" and "Indexer" in self._register_model[address_space_name]["Register Blocks"][block_name] and broadcast == "1":
-    #            value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
-    #
-    #            for position in value_info['position']:
-    #                self._indexer_vars['broadcast']['variable'].set(broadcast)
-    #                register = position[0]
-    #                self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
-    #        else:
-    #            self._indexer_vars['broadcast']['variable'].set("0")
-    #            return super().write_decoded_value(
-    #                address_space_name=address_space_name,
-    #                block_name=block_name,
-    #                decoded_value_name=decoded_value_name,
-    #                write_check=write_check,
-    #                no_message=no_message,
-    #            )
+            for position in value_info['position']:
+                self.broadcast = 1
+                register = position[0]
+                self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
+        else:
+            return super().write_decoded_value(
+                address_space_name=address_space_name,
+                block_name=block_name,
+                decoded_value_name=decoded_value_name,
+                write_check=write_check,
+                no_message=no_message,
+            )
 
     def read_all_efficient(self):
         for address_space_name in self._address_space:

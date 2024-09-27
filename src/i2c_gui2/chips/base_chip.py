@@ -332,19 +332,21 @@ class Base_Chip:
         address_space: Address_Space_Controller = self._address_space[address_space_name]
         return address_space.write_register(block_ref, register, readback_check=readback_check)
 
-    #    def read_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, no_message: bool = False):
-    #        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
-    #
-    #        for position in value_info['position']:
-    #            register = position[0]
-    #            self.read_register(address_space_name, block_name, register, no_message=no_message)
+    def read_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, no_message: bool = False):
+        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
-    #    def write_decoded_value(self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False):
-    #        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
-    #
-    #        for position in value_info['position']:
-    #            register = position[0]
-    #            self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
+        for position in value_info['position']:
+            register = position[0]
+            self.read_register(address_space_name, block_name, register, no_message=no_message)
+
+    def write_decoded_value(
+        self, address_space_name: str, block_name: str, decoded_value_name: str, write_check: bool = True, no_message: bool = False
+    ):
+        value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
+
+        for position in value_info['position']:
+            register = position[0]
+            self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
 
     def save_pickle_file(self, config_file: str, object):
         save_object = {
