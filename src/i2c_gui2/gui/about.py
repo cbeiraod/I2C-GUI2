@@ -67,7 +67,7 @@ class About_Helper:
 
         from .. import __version__
 
-        self._about_info_label = tk.Label(self._frame, text="I2C GUI Library - v{}".format(__version__))
+        self._about_info_label = tk.Label(self._frame, text="I2C GUI++ Library - v{}".format(__version__))
         self._about_info_label.grid(column=100, row=2000, sticky='', pady=(20, 0))
 
         self._about_copy_label = tk.Label(
