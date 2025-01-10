@@ -377,8 +377,14 @@ class Base_Chip:
         value = 0
         for position in value_info['position']:
             register = position[0]
-            use_bits_max, use_bits_min = position[1].split("-")
-            position_bits = int(position[2].split("-")[1])
+            if "-" in position[1]:
+                use_bits_max, use_bits_min = position[1].split("-")
+                position_bits = int(position[2].split("-")[1])
+            else:
+                use_bits_max = position[1]
+                use_bits_min = position[1]
+                position_bits = int(position[2])
+
             register_value = self.__getitem__((address_space_name, block_name, register))
 
             use_bits_min = int(use_bits_min)
@@ -405,8 +411,14 @@ class Base_Chip:
 
         for position in value_info['position']:
             register = position[0]
-            reg_bits_max, reg_bits_min = position[1].split("-")
-            value_bits_max, value_bits_min = position[2].split("-")
+            if "-" in position[1]:
+                reg_bits_max, reg_bits_min = position[1].split("-")
+                value_bits_max, value_bits_min = position[2].split("-")
+            else:
+                reg_bits_max = position[1]
+                reg_bits_min = position[1]
+                value_bits_max = position[2]
+                value_bits_min = position[2]
 
             reg_bits_min = int(reg_bits_min)
             reg_bits_max = int(reg_bits_max)
