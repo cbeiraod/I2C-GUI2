@@ -3,6 +3,10 @@ Changelog
 
 Current (2025-01-10)
 --------------------
+
+0.1.7 (2024-09-27)
+--------------------
+
 * Fixed issue with getting and setting single bit decoded values
 
 0.1.6 (2024-09-27)
