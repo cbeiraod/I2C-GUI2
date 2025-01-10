@@ -27,7 +27,7 @@ import pytest
 def test_version():
     import i2c_gui2
 
-    version = '0.1.7'
+    version = '0.1.8'
 
     pytest.param
 
