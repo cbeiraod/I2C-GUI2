@@ -1680,11 +1680,11 @@ class ETROC2_Chip(Base_Chip):
 
     @property
     def col(self) -> int:
-        return self._indexer_vars['col']['variable']
+        return self._indexer_vars['column']['variable']
 
     @col.setter
     def col(self, value: int):
-        self.set_indexer('col', value)
+        self.set_indexer('column', value)
 
     #  Since there is the broadcast feature, we can not allow to write a full adress space
     # because the broadcast feature would overwrite previous addresses, so we write in blocks

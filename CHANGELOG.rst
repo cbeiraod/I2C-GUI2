@@ -4,6 +4,8 @@ Changelog
 Current (2025-01-10)
 --------------------
 
+* Fixed issue with column indexer
+
 0.1.7 (2024-09-27)
 --------------------
 
