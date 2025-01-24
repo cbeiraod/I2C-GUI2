@@ -1664,11 +1664,18 @@ class ETROC2_Chip(Base_Chip):
 
     @property
     def broadcast(self) -> bool:
-        return self._indexer_vars['broadcast']['variable']
+        value = self._indexer_vars['broadcast']['variable']
+        if value == 0:
+            return False
+        else:
+            return True
 
     @broadcast.setter
     def broadcast(self, value: bool):
-        self.set_indexer('broadcast', value)
+        if value:
+            self.set_indexer('broadcast', 1)
+        else:
+            self.set_indexer('broadcast', 0)
 
     @property
     def row(self) -> int:

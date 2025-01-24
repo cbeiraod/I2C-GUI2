@@ -4,6 +4,8 @@ Changelog
 Current (2025-01-10)
 --------------------
 
+* Fixed issue with setting the broadcast value
+
 0.1.8 (2024-09-27)
 --------------------
 
