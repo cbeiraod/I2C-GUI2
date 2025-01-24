@@ -4,25 +4,28 @@ Changelog
 Current (2025-01-24)
 --------------------
 
+0.1.9 (2024-01-24)
+------------------
+
 * Fixed issue with setting the broadcast value
 
-0.1.8 (2024-09-27)
---------------------
+0.1.8 (2024-01-10)
+------------------
 
 * Fixed issue with column indexer
 
-0.1.7 (2024-09-27)
---------------------
+0.1.7 (2024-01-10)
+------------------
 
 * Fixed issue with getting and setting single bit decoded values
 
 0.1.6 (2024-09-27)
---------------------
+------------------
 
 * Added functions to set and get decoded values
 
 0.1.5 (2024-09-27)
---------------------
+------------------
 
 * Added functions to read and write the registers that make up a decoded registers
 * Added a new indexing mode for the Address Space Controller to use the register block and name instead of the address only
