@@ -1,7 +1,7 @@
 Changelog
 =========
 
-Current (2025-01-10)
+Current (2025-01-24)
 --------------------
 
 * Fixed issue with setting the broadcast value
