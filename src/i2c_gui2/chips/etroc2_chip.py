@@ -1832,7 +1832,36 @@ class ETROC2_Chip(Base_Chip):
                 no_message=no_message,
             )
 
+    def write_all_efficient(self, readback_check: bool = True):
+        """This write function will only write the named register addresses in the ETROC2 manual.
+        There are many addresses which are not named and as a result are not written. In principle,
+        these addresses are not used for anything and may not even be implemented in the chip,
+        but by using this function we are essentially not setting these unnamed addresses"""
+        for address_space_name in self._address_space:
+            address_space: Address_Space_Controller = self._address_space[address_space_name]
+            for block_name in address_space._blocks:
+                if (
+                    block_name in register_model[address_space_name]["Register Blocks"]
+                    and "Indexer" in register_model[address_space_name]["Register Blocks"][block_name]
+                ):
+                    continue
+
+                if block_name not in register_model[address_space_name]["Register Blocks"]:
+                    length = efficient_block_lengths[address_space_name][block_name.split(":")[0]]
+                else:
+                    length = efficient_block_lengths[address_space_name][block_name]
+                address_space.write_memory_block(address_space._blocks[block_name]["Base Address"], length, readback_check=readback_check)
+
+                # No need to write the SEU counters, but the code block to do so is below in case it is seen to be needed
+                # if address_space_name == "ETROC2" and block_name == "Peripheral Status":
+                #    address_space.write_memory_block(0x0120, 4)
+
     def read_all_efficient(self):
+        """This read function will only read the named register addresses in the ETROC2 manual.
+        There are many addresses which are not named and as a result are not read. In principle,
+        these addresses are not used for anything and may not even be implemented in the chip,
+        but by using this function we are essentially blind to what is happening on these unnamed
+        addresses"""
         for address_space_name in self._address_space:
             address_space: Address_Space_Controller = self._address_space[address_space_name]
             for block_name in address_space._blocks:
