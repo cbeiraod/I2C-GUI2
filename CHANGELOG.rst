@@ -4,6 +4,10 @@ Changelog
 Current (2025-01-29)
 --------------------
 
+
+0.1.10 (2025-01-29)
+-------------------
+
 * Implement a write_all_efficient function for ETROC2
 
 0.1.9 (2024-01-24)
