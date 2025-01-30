@@ -1777,7 +1777,6 @@ class ETROC2_Chip(Base_Chip):
                 block_name=block_name,
                 full_array=False,
             )
-            params['broadcast'] = True
 
             if not no_message:
                 self._logger.info(
@@ -1786,8 +1785,13 @@ class ETROC2_Chip(Base_Chip):
                     )
                 )
 
+            # Fetch the current indexed address, so we can copy the data over to the broadcast region
+            base_address = etroc2_column_row_to_base_address(**params)
+
             # Fetch the base address for the broadcast block array
+            params['broadcast'] = True
             broadcast_base_address = etroc2_column_row_to_base_address(**params)
+
             offset = self._register_model[address_space_name]["Register Blocks"][block_name]['Registers'][register]['offset']
             broadcast_address = broadcast_base_address + offset
 
@@ -1795,11 +1799,13 @@ class ETROC2_Chip(Base_Chip):
 
             # Temporarily disable the read-only property on the broadcast address
             address_space._read_only_map[broadcast_address] = False
+            address_space._memory[broadcast_address] = address_space._memory[base_address + offset]
 
             return_status = address_space.write_memory_block(broadcast_address, 1, readback_check=readback_check)
 
             # Re-enable the read-only on the broadcast address
             address_space._read_only_map[broadcast_address] = True
+            address_space._memory[broadcast_address] = None
 
             # TODO: Validate broadcast write
 
