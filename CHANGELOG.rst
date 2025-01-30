@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Current (2025-01-30)
---------------------
+0.1.12 (2025-01-30)
+-------------------
 
 * Fixed broadcast not having the data in memory
 
