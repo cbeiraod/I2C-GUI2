@@ -1831,7 +1831,6 @@ class ETROC2_Chip(Base_Chip):
             value_info = self._register_decoding[address_space_name]['Register Blocks'][block_name][decoded_value_name]
 
             for position in value_info['position']:
-                self.broadcast = 1
                 register = position[0]
                 self.write_register(address_space_name, block_name, register, write_check, no_message=no_message)
         else:
