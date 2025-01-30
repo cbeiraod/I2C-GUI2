@@ -4,6 +4,8 @@ Changelog
 Current (2025-01-30)
 --------------------
 
+* Fixed broadcast not having the data in memory
+
 0.1.11 (2025-01-30)
 -------------------
 
