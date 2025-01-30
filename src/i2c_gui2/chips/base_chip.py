@@ -263,8 +263,8 @@ class Base_Chip:
         if minVal is not None and maxVal is not None:
             if value < minVal:
                 raise RuntimeError(f"The indexer '{name}' should not have a value smaller than {minVal}, tried to set {value}")
-            if value >= maxVal:
-                raise RuntimeError(f"The indexer '{name}' should not have a value greater than or equal to {minVal}, tried to set {value}")
+            if value > maxVal:
+                raise RuntimeError(f"The indexer '{name}' should not have a value greater than {maxVal}, tried to set {value}")
         self._indexer_vars[name]['variable'] = value
 
     def read_all(self):

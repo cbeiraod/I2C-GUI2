@@ -1611,7 +1611,7 @@ class ETROC2_Chip(Base_Chip):
     _indexer_info = {
         "vars": ["block", "column", "row", "broadcast"],
         "min": [None, 0, 0, 0],
-        "max": [None, 16, 16, 1],
+        "max": [None, 15, 15, 1],  # Max is inclusive, i.e. the interval is defined as [min, max]
     }
 
     def __init__(
