@@ -1722,14 +1722,17 @@ class ETROC2_Chip(Base_Chip):
                 block_name=block_name,
                 full_array=False,  # Always specifically set to false since we always want to address a single "element" of the array due to the broadcast feature
             )
-            params['broadcast'] = True
 
             if not no_message:
                 self._logger.info(
                     "Broadcast writing block {} from address space {} of chip {}".format(block_ref, address_space_name, self._chip_name)
                 )
 
+            # Fetch the current indexed address, so we can copy the data over to the broadcast region
+            base_address = etroc2_column_row_to_base_address(**params)
+
             # Fetch the base address for the broadcast block array
+            params['broadcast'] = True
             broadcast_base_address = etroc2_column_row_to_base_address(**params)
 
             address_space: Address_Space_Controller = self._address_space[address_space_name]
@@ -1740,6 +1743,7 @@ class ETROC2_Chip(Base_Chip):
             for offset in range(block_length):
                 broadcast_address = broadcast_base_address + offset
                 address_space._read_only_map[broadcast_address] = False
+                address_space._memory[broadcast_address] = address_space._memory[base_address + offset]
 
             return_status = address_space.write_memory_block(broadcast_base_address, block_length, readback_check=readback_check)
 
@@ -1747,6 +1751,7 @@ class ETROC2_Chip(Base_Chip):
             for offset in range(block_length):
                 broadcast_address = broadcast_base_address + offset
                 address_space._read_only_map[broadcast_address] = True
+                address_space._memory[broadcast_address] = None
 
             # TODO: Validate broadcast write
 
