@@ -23,7 +23,7 @@
 
 from __future__ import annotations
 
-__version__ = '0.1.12'
+__version__ = '0.1.13'
 
 from .chips.etroc2_chip import ETROC2_Chip
 from .functions import addLoggingLevel
