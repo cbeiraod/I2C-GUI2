@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Current (2025-03-07)
+--------------------
+
+* Added extra debugging registers, as added in the ETROC2 manual
+
 0.1.12 (2025-01-30)
 -------------------
 

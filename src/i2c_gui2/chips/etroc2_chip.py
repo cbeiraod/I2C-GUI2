@@ -195,6 +195,14 @@ register_model = {
                         "offset": 0x001F,
                         "default": 0x0B,
                     },
+                    "MagicNumberReg": {
+                        "offset": 0x0020,
+                        "default": 0x00,
+                    },
+                    "ClockIOCtrl": {
+                        "offset": 0x0021,
+                        "default": 0x00,
+                    },
                 },
             },
             "Peripheral Status": {  # Register Block
@@ -1179,6 +1187,36 @@ register_decoding = {
                     "bits": 1,
                     "position": [("PeriCfg31", "5", "0")],
                     "info": "The TDC reference strobe testing enable.\n - High: sending TDC reference strobe at the right serial port\n - Low: sending right serializer data at the right port",
+                    "show_binary": False,
+                },
+                "MagicNumber": {
+                    "bits": 8,
+                    "position": [("MagicNumberReg", "7-0", "7-0")],
+                    "info": "The magic number is 0b10010110. If MagicNumberReg equals the magic number and I2CClkDis equals 0b000, 0b001, 0b010 or 0b100, the clock would be disabled and the I2C slave would not be accessible with normal operation. A hard reset is needed to bring it back. They are writable and readable with the I2C write/read operation.",
+                    "show_binary": False,
+                },
+                "I2CClkDis": {
+                    "bits": 3,
+                    "position": [("ClockIOCtrl", "2-0", "2-0")],
+                    "info": "I2C clock disable control. See Magic Number register",
+                    "show_binary": True,
+                },
+                "I2CForceClkGen": {
+                    "bits": 1,
+                    "position": [("ClockIOCtrl", "3", "0")],
+                    "info": "Force clock enable. When it is true, the clock generator is always on. When it is false, the clock generator remains off as long as there is no I2C operation and no TMR error is detected.",
+                    "show_binary": False,
+                },
+                "I2CSDAStr": {
+                    "bits": 1,
+                    "position": [("ClockIOCtrl", "4", "0")],
+                    "info": "SDA driving strength. If it is true, SDA driving strength is high.",
+                    "show_binary": False,
+                },
+                "I2CSDADrv": {
+                    "bits": 1,
+                    "position": [("ClockIOCtrl", "5", "0")],
+                    "info": "drive SDA signal. By default (false), the SDA signal is not actively driven high but is instead pulled up by an external pull-up resistor. When it is true, the SDA signal is actively driven high.",
                     "show_binary": False,
                 },
             },
