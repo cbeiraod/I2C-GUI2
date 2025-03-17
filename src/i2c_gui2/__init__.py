@@ -23,7 +23,7 @@
 
 from __future__ import annotations
 
-__version__ = '0.1.13'
+__version__ = '0.1.14'
 
 from .chips.ad5593r_chip import AD5593R_Chip
 from .chips.etroc2_chip import ETROC2_Chip
