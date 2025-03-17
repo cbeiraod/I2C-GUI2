@@ -25,6 +25,7 @@ from __future__ import annotations
 
 __version__ = '0.1.13'
 
+from .chips.ad5593r_chip import AD5593R_Chip
 from .chips.etroc2_chip import ETROC2_Chip
 from .functions import addLoggingLevel
 from .i2c_messages import I2CMessages
@@ -35,4 +36,4 @@ addLoggingLevel('TRACE', 8)
 addLoggingLevel('DETAILED_TRACE', 5)
 # addLoggingLevel('HIGH_TEST', 100)
 
-__all__ = ["I2CMessages", "USB_ISS_Helper", "ETROC2_Chip"]
+__all__ = ["I2CMessages", "USB_ISS_Helper", "ETROC2_Chip", "AD5593R_Chip"]

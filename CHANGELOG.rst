@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.14 (2025-03-17)
+-------------------
+
+* Added the AD5593R chip to the init module so it is automatically available
+
 0.1.13 (2025-03-07)
 -------------------
 
